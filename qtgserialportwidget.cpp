@@ -6,7 +6,8 @@ QTGSerialPortWidget::QTGSerialPortWidget(QWidget *parent) : QWidget(parent),
     _connectButtonText(tr("connect")),
     _connectDisconnectButtonText(tr("disconnect")),
     _serialPortComboBox(new QComboBox(this)),
-    _connectDisconnectButton(new QPushButton(_connectButtonText,this))
+    _connectDisconnectButton(new QPushButton(_connectButtonText,this)),
+    _refreshButton(new QPushButton(tr("refresh"), this))
 {
     QGridLayout *mainLayout = new QGridLayout(this);
     QLabel *portLabel = new QLabel(tr("Port"), this);
@@ -21,12 +22,13 @@ QTGSerialPortWidget::QTGSerialPortWidget(QWidget *parent) : QWidget(parent),
     }
     mainLayout->addWidget(_serialPortComboBox, 0, 1, 1,3);
     mainLayout->addWidget(_connectDisconnectButton, 0,4);
-    QPushButton *refreshButton = new QPushButton(tr("refresh"), this);
-    connect(refreshButton, SIGNAL(clicked(bool)), this, SLOT(onRefreshButtonClick(bool)));
-    mainLayout->addWidget(refreshButton, 0,5);
+    connect(_refreshButton, SIGNAL(clicked(bool)), this, SLOT(onRefreshButtonClick(bool)));
+    mainLayout->addWidget(_refreshButton, 0,5);
 
 
     setLayout(mainLayout);
+
+    connect(_connectDisconnectButton, SIGNAL(clicked(bool)), this, SLOT(onConnectButtonClick(bool)));
 }
 
 QComboBox *QTGSerialPortWidget::getSerialPortComboBox()
@@ -37,11 +39,13 @@ QComboBox *QTGSerialPortWidget::getSerialPortComboBox()
 void QTGSerialPortWidget::setConnected()
 {
     _serialPortComboBox->setDisabled(true);
+    _refreshButton->setDisabled(true);
     _connectDisconnectButton->setText(tr("disconnect"));
 }
 void QTGSerialPortWidget::setDisconnected()
 {
     _serialPortComboBox->setEnabled(true);
+    _refreshButton->setEnabled(true);
     _connectDisconnectButton->setText(tr("connect"));
 }
 

@@ -17,6 +17,7 @@ private:
     QString _connectDisconnectButtonText;
     QComboBox *_serialPortComboBox;
     QPushButton *_connectDisconnectButton;
+    QPushButton *_refreshButton;
 
 signals:
     void connectionRequest(QString port);
@@ -31,7 +32,6 @@ public slots:
 private slots:
     void onConnectButtonClick(bool value);
     void onRefreshButtonClick(bool value);
-
 };
 
 #endif // QTGSERIALPORTWIDGET_H
